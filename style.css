@@ -565,3 +565,22 @@ html {
     height: 250px;
   }
 }
+@media (max-width: 768px)
+{
+  .footer .d-flex {
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 15px;
+    text-align: center;
+  }
+  .footer span {
+    display: block;
+  }
+  .reel-section iframe {
+    width: 100% !important;
+    height: 250px !important;
+  }
+  .reel-section .container {
+    padding: 0 15px;
+  }
+}
