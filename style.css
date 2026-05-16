@@ -531,3 +531,37 @@ html {
     max-width: 100%;
   }
 }
+@media (max-width: 768px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 0 15px;
+  }
+
+  .service-card img {
+    height: 160px;
+  }
+
+  .service-card h4 {
+    font-size: 14px;
+    min-height: 60px;
+    padding: 10px 8px;
+  }
+
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+  }
+
+  iframe {
+    width: 100% !important;
+    height: 300px !important;
+  }
+
+  .logo {
+    height: 200px;
+  }
+
+  .carousel img {
+    height: 250px;
+  }
+}
