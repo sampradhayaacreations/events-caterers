@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gallery | Sampradayaa Creations</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      background: #ffffff;
+      color: rgb(0, 0, 0);
+    }
+    body {
+      padding-top: 90px; /* pushes content below navbar */
+    }
+    /* HEADER */
+    .gallery-header {
+      padding: 100px 0 40px;
+      text-align: center;
+    }
+
+    .gallery-header h1 {
+      font-weight: 300;
+      letter-spacing: 2px;
+    }
+
+    /* FILTER BUTTONS */
+    .filter-btns {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .filter-btn {
+      border: 1px solid #d4af37;
+      color: #d4af37;
+      background: transparent;
+      padding: 8px 18px;
+      margin: 5px;
+      transition: 0.3s;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: #d4af37;
+      color: black;
+    }
+
+    /* GRID */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    /* IMAGE CARD */
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    /* HOVER EFFECT */
+    .gallery-item:hover img {
+      transform: scale(1.1);
+    }
+
+    .gallery-overlay {
+      position: absolute;
+      bottom: 0;
+      z-index: 2;
+      width: 100%;
+      background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+      color: #d4af37;
+      text-align: center;
+      padding: 12px;
+      opacity: 0;
+      transition: 0.3s ease;
+      font-size: 14px;
+      letter-spacing: 1px;
+    }
+    .custom-navbar {
+      background: rgb(98, 93, 84);
+      transition: all 0.4s ease;
+    }
+    .gallery-item:hover .gallery-overlay {
+      opacity: 1;
+    }
+
+    /* LIGHTBOX */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(166, 159, 159, 0.9);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+    }
+    .footer {
+  background: #1a1a1a;
+  color: white;
+  font-size: 14px;
+}
+
+.footer a {
+  color: #d4af37;
+  text-decoration: none;
+  margin: 0 8px;
+  transition: 0.3s;
+}
+
+.footer a:hover {
+  color: white;
+}
+.category-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.overlay-content-box {
+  width: 90%;
+  max-width: 1100px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  padding: 30px;
+  border-radius: 10px;
+  position: relative;
+}
+
+.overlay-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.overlay-grid img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.overlay-grid img:hover {
+  transform: scale(1.05);
+}
+
+.close-overlay {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 22px;
+  cursor: pointer;
+  color: white;
+}
+.gallery-overlay-full {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  z-index: 9999;
+}
+
+.gallery-overlay-content {
+  width: 90%;
+  max-width: 1000px;
+  margin: 80px auto;
+  background: transparent;
+  position: relative;
+}
+
+.gallery-scroll {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));;
+  gap: 20px;
+
+  max-height: 80vh;
+  overflow-y: auto;
+
+  padding-right: 10px;
+}
+
+/* SCROLLBAR CLEAN */
+.gallery-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.gallery-scroll::-webkit-scrollbar-thumb {
+  background: #d4af37;
+  border-radius: 10px;
+}
+
+/* IMAGES */
+.gallery-scroll img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+
+  border-radius: 10px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.gallery-scroll img:hover {
+  transform: scale(1.02);
+}
+
+/* CLOSE BUTTON */
+.close-btn-overlay {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  font-size: 28px;
+  color: white;
+  cursor: pointer;
+}
+.gallery-overlay-full {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.container {
+  max-width: 1200px;
+}
+.image-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0,0,0,0.95);
+
+  display: none;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 10000;
+}
+
+.image-popup img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+}
+
+.popup-close {
+  position: absolute;
+  top: 20px;
+  right: 35px;
+
+  color: white;
+  font-size: 40px;
+  cursor: pointer;
+}
+  </style>
+</head>
+
+<body>
+<!-- HEADER -->
+<header>
+  <nav class="navbar navbar-expand-lg fixed-top custom-navbar">
+    <div class="container d-flex align-items-center">
+      <!-- TOGGLER -->
+      <button id="menuBtn" class="menu-toggle" onclick="toggleMenu()">☰ MENU</button>
+      <!-- CENTER + RIGHT -->
+      <div class="collapse navbar-collapse">
+        <!-- CENTER MENU -->
+        <ul class="navbar-nav mx-auto gap-4">
+          <li class="nav-item"><a class="nav-link" href="index.html">HOME</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#testimonials">TESTIMONIALS</a></li>
+          <!-- DROPDOWN -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="index.html#services" data-bs-toggle="dropdown">SERVICES</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="index.html#services">Wedding Decor</a></li>
+              <li><a class="dropdown-item" href="index.html#services">Wedding Management</a></li>
+              <li><a class="dropdown-item" href="index.html#services">Corporate Events</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="Gallery.html">GALLERY</a></li>
+          <li class="nav-item"><a class="nav-link" href="Contact.html">CONTACT</a></li>
+        </ul>
+        <!-- RIGHT BUTTON -->
+        <a href="#" class="btn quote-btn">Request Quotation</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<!-- GRID -->
+<br>
+<div class="container">
+  <div class="gallery-grid">
+    <!-- ITEM -->
+    <div class="gallery-item" onclick="openGallery('EngagementCeremony')">
+      <img src="Images/Engagement Ceremony 2.jpg">
+      <div class="gallery-overlay">Engagement Ceremony</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('GaneshPooja')">
+      <img src="Images/Ganesh Pooja 3.jpg">
+      <div class="gallery-overlay">Ganesh Pooja</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('HomeDecor')">
+      <img src="Images/Home Decor 11.jpg">
+      <div class="gallery-overlay">Home Decor</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('Handra')">
+      <img src="Images/Handra 4.jpg">
+      <div class="gallery-overlay">Handra Decor</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('VaruluKallu')">
+      <img src="Images/Varulu Kallu Pooja 3.jpg">
+      <div class="gallery-overlay">Varulu Kallu Pooje(Kottanam)</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('HaldiDecor')">
+      <img src="Images/Haldi Decor 7.jpg">
+      <div class="gallery-overlay">Haldi Decor(Managala Snana)</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('SurugiNeeru')">
+      <img src="Images/Surugi Neeru 2.png">
+      <div class="gallery-overlay">Suruge Neeru</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('MehendiDecor')">
+      <img src="Images/Mehendi Decor.png">
+      <div class="gallery-overlay">Mehendi Ceremony</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('SangeethDecor')">
+      <img src="Images/Venue Decor.jpg">
+      <div class="gallery-overlay">Sangeeth Ceremony</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('GrandWelcome')">
+      <img src="Images/Welcome Flower Path 3.jpg">
+      <div class="gallery-overlay">Grand Welcome</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('StageDecor')">
+      <img src="Images/Stage Decor 3.jpg">
+      <div class="gallery-overlay">Stage Decor</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('VenueDecor')">
+      <img src="Images/Venue Decor 8.jpg">
+      <div class="gallery-overlay">Venue Decor</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('Rukwoth')">
+      <img src="Images/Stage Decor.jpg">
+      <div class="gallery-overlay">Rukwoth</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('MangalaGouriPooja')">
+      <img src="Images/Mangala Gouri Pooja.jpg">
+      <div class="gallery-overlay">Mangala Gouri Pooje</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('KashiYatra')">
+      <img src="Images/Kashi Yatra 6.jpg">
+      <div class="gallery-overlay">Kashi Yatra</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('Maduve')">
+      <img src="Images/Wedding Rituals 3.jpg">
+      <div class="gallery-overlay">Madve/Phere/Varmaala</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('Saptapadi')">
+      <img src="Images/Saptapadi 3.jpg">
+      <div class="gallery-overlay">Saptapadi</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('DollDisplay')">
+      <img src="Images/Doll Display.jpg">
+      <div class="gallery-overlay">Doll Display</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('BididhiMane')">
+      <img src="Images/Bididhi Mane Arrangement 2.png">
+      <div class="gallery-overlay">Bididhi mane arrangement(Groom's Room Decor)</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('VaraPoojeTrays')">
+      <img src="Images/WE - Display Item 18.jpg">
+      <div class="gallery-overlay">Vara Pooje Trays</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('BridalEntry')">
+      <img src="Images/WE - Bridal Entry 3.jpg ">
+      <div class="gallery-overlay">Bridal Entry Concepts</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('BhoomaBhojana')">
+      <img src="Images/Bhooma Bhojana.png">
+      <div class="gallery-overlay">Bhooma Bhojana</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('Gruhapravesha')">
+      <img src="Images/Gruhapravesha Laxmi Pooja 2.jpg">
+      <div class="gallery-overlay">Gruhapravesha Lakshmi Pooja</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('OtherItems')">
+      <img src="Images/WE - Display Item 12.png">
+      <div class="gallery-overlay">Other Items</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('BanthiBhojana')">
+      <img src="Images/Venue Decor 11.jpg">
+      <div class="gallery-overlay">Banthi Bhojana</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('Upanayana')">
+      <img src="Images/Upanaraya Kuteera.jpg">
+      <div class="gallery-overlay">Upanayana/Munjuve</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('MathruBhojana')">
+      <img src="Images/Upanayana Mathru Bhojana.jpg">
+      <div class="gallery-overlay">Maathru Bhojana</div>
+    </div>
+    <div class="gallery-item" onclick="openGallery('SatyanarayanaPooja')">
+      <img src="Images/Satyanarayana Pooja 2.jpg">
+      <div class="gallery-overlay">Satya Narayana Pooje</div>
+    </div>
+  </div>
+</div>
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <img id="lightbox-img">
+</div>
+<div id="categoryOverlay" class="category-overlay" onclick="closeCategoryOverlay(event)">
+  <div class="overlay-content-box">
+    <span class="close-overlay" onclick="closeCategoryOverlay()">✕</span>
+    <div id="overlayImages" class="overlay-grid"></div>
+  </div>
+</div>
+<!-- OVERLAY -->
+<div id="overlayMenu" class="overlay-menu">
+  <button class="close-btn" onclick="toggleMenu()">✕</button>
+    <div class="overlay-content">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="navbar-brand" href="#"><img src="SAMPRADAYaA EVENTS & CATERERS.png" alt="" style="height: 15rem;" ></a>
+      <h5>EVENT CATOGORIES</h5>
+      <ul class="event-list">
+        <li><button class="event-btn">Wedding Decor</button></li>
+        <li><button class="event-btn">Haldi & Mehendi</button></li>
+        <li><button class="event-btn">Reception</button></li>
+        <li><button class="event-btn">Catering</button></li>
+      </ul>
+      <p>
+        📧 <a href="mailto:sampradhayacreations@gmail.com">Gmail</a>
+      </p>
+      <div class="social-links">
+        <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+        <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+        <a href="#"><i class="fab fa-youtube"></i> YouTube</a>
+      </div>
+    </div>
+</div>
+<div id="galleryOverlay" class="gallery-overlay-full" onclick="closeGallery(event)">
+  <div class="gallery-overlay-content">
+    <span class="close-btn-overlay" onclick="closeGallery()">✕</span>
+    <div id="galleryScroll" class="gallery-scroll"></div>
+  </div>
+</div>
+<!-- IMAGE POPUP -->
+<div id="imagePopup" class="image-popup" onclick="closeImagePopup()">
+  <span class="popup-close">✕</span>
+  <img id="popupImg">
+</div>
+<!-- FOOTER -->
+<br>
+<footer class="footer bg-dark text-white text-center py-4">
+  <div class="d-flex justify-content-center">
+    <span>📍 Hyderabad, India</span>&nbsp; | &nbsp;
+    <span>📧 sampradhayacreations@gmail.com</span>&nbsp; | &nbsp;
+    <span>📞 +91 99598 94239</span>  
+  </div>
+  <br>
+  <div>
+    <a href="#">Instagram</a> |
+    <a href="#">Facebook</a> |
+    <a href="#">YouTube</a>
+  </div> 
+  <p class="mt-3">© 2026 Sampradaya Creations</p>
+</footer>
+<script>
+function filterGallery(category, el) {
+  const items = document.querySelectorAll(".gallery-item");
+
+  items.forEach(item => {
+    item.style.display =
+      category === "all" || item.classList.contains(category)
+        ? "block"
+        : "none";
+  });
+
+  document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
+  el.classList.add("active");
+}
+</script>
+<script>
+  window.addEventListener("scroll", function () 
+  {
+    document.querySelector(".custom-navbar")
+    .classList.toggle("scrolled", window.scrollY > 50);
+  });
+</script>
+<script>
+  function toggleMenu() 
+  {
+    const menu = document.getElementById("overlayMenu");
+    const btn = document.getElementById("menuBtn");
+    menu.classList.toggle("active");
+    // hide/show button
+    if (menu.classList.contains("active")) 
+    {
+      btn.style.display = "none";
+    } else 
+    {
+      btn.style.display = "inline-block";
+    }
+  }
+</script>
+<script>
+const galleryData = {
+  EngagementCeremony: [
+    "Images/Engagement Ceremony.jpg",
+    "Images/Engagement Ceremony 2.jpg",
+    "Images/Engagement Ceremony 3.jpg"
+  ],
+
+  HomeDecor: [
+    "Images/Home Decor.jpg",
+    "Images/Home Decor 2.png",
+    "Images/Home Decor 3.png",
+    "Images/Home Decor 4.png",
+    "Images/Home Decor 5.png",
+    "Images/Home Decor 6.jpg",
+    "Images/Home Decor 7.jpg",
+    "Images/Home Decor 8.jpg",
+    "Images/Home Decor 9.jpg",
+    "Images/Home Decor 10.jpg",
+    "Images/Home Decor 11.jpg"
+  ],
+
+  Handra: [
+    "Images/Handra.png",
+    "Images/Handra 2.png",
+    "Images/Handra 3.png",
+    "Images/Handra 4.jpg",
+    "Images/Handra 5.jpg"
+  ],
+
+  GaneshPooja: [
+    "Images/Ganesh Pooja.jpg",
+    "Images/Ganesh Pooja 2.jpg",
+    "Images/Ganesh Pooja 3.jpg"
+  ],
+
+  VaruluKallu: [
+    "Images/Varulu Kallu Pooja.jpg",
+    "Images/Varulu Kallu Pooja 2.jpg",
+    "Images/Varulu Kallu Pooja 3.jpg",
+    "Images/Varulu Kallu Pooja 4.jpg",
+    "Images/Varulu Kallu Pooja 5.jpg",
+    "Images/Varulu Kallu Pooja 6.jpg",
+    "Images/Varulu Kallu Pooja 7.jpg",
+    "Images/Varulu Kallu Pooja 8.jpg",
+    "Images/Varulu Kallu Pooja 9.jpg",
+    "Images/Varulu Kallu Pooja 10.png"
+  ],
+
+  SurugiNeeru: [
+    "Images/Surugi Neeru.png",
+    "Images/Surugi Neeru 2.png"
+  ],
+
+  HaldiDecor: [
+    "Images/Haldi Decor.png",
+    "Images/Haldi Decor 2.png",
+    "Images/Haldi Decor 3.jpg",
+    "Images/Haldi Decor 4.jpg",
+    "Images/Haldi Decor 5.jpg",
+    "Images/Haldi Decor 6.jpg",
+    "Images/Haldi Decor 7.jpg",
+    "Images/Haldi Decor 8.jpg",
+    "Images/Haldi Decor 9.jpg"
+  ],
+
+  MehendiDecor: [
+    "Images/Mehendi Decor.png",
+    "Images/Mehendi Decor 2.png",
+    "Images/Mehendi Decor 3.png"
+  ],
+
+  SangeethDecor: [
+    "Images/Venue Decor.jpg"
+  ],
+
+  StageDecor: [
+    "Images/Stage Decor.jpg",
+    "Images/Stage Decor 2.jpg",
+    "Images/Stage Decor 3.jpg",
+    "Images/Stage Decor 4.jpg",
+    "Images/Stage Decor 5.jpg"
+  ],
+
+  VenueDecor: [
+    "Images/Venue Decor.jpg",
+    "Images/Venue Decor 2.jpg",
+    "Images/Venue Decor 3.jpg",
+    "Images/Venue Decor 4.jpg",
+    "Images/Venue Decor 5.jpg",
+    "Images/Venue Decor 6.jpg",
+    "Images/Venue Decor 7.jpg",
+    "Images/Venue Decor 8.jpg",
+    "Images/Venue Decor 9.jpg",
+    "Images/Venue Decor 10.jpg",
+    "Images/Venue Decor 11.jpg"
+  ],
+
+  GrandWelcome: [
+    "Images/Welcome Flower Path.jpg",
+    "Images/Welcome Flower Path 2.jpg",
+    "Images/Welcome Flower Path 3.jpg",
+    "Images/Welcome Flower Path 4.jpg",
+    "Images/Welcome Flower Path 5.png",
+    "Images/Welcome Flower Path 6.png",
+    "Images/Welcome Flower Path 7.png",
+    "Images/Welcome Flower Path 8.jpg",
+    "Images/Welcome Flower Path 9.jpg",
+    "Images/Welcome Flower Path 10.jpg",
+    "Images/Welcome Flower Path 11.jpg",
+    "Images/Welcome Flower Path 12.jpg",
+    "Images/Welcome Flower Path 13.jpg",
+    "Images/Welcome Flower Path 14.jpg",
+    "Images/Welcome Flower Path 15.jpg",
+    "Images/Welcome Flower Path 16.jpg"
+  ],
+
+  Rukwoth: [
+    "Images/WE - Display Item 13.png",
+    "Images/WE - Display Item 14.png",
+    "Images/WE - Display Item 15.png",
+    "Images/WE - Display Item 16.jpg",
+    "Images/WE - Display Item 17.jpg",
+    "Images/WE - Display Item 18.jpg",
+    "Images/WE - Display Item 19.jpg",
+    "Images/WE - Display Item 20.jpg",
+    "Images/WE - Display Item 21.jpg"
+  ],
+
+  MangalaGouriPooja: [
+    "Images/Mangala Gouri Pooja.jpg",
+    "Images/Mangala Gouri Pooja 2.png",
+    "Images/Mangala Gouri Pooja 3.png",
+    "Images/Mangala Gouri Pooja 4.jpg",
+    "Images/Mangala Gouri Pooja 5.jpg",
+    "Images/Mangala Gouri Pooja 6.jpg",
+    "Images/WE - Maradha Bhagina.jpg",
+    "Images/WE - Maradha Bhagina 2.jpg",
+    "Images/WE - Maradha Bhagina 3.jpg",
+    "Images/WE - Maradha Bhagina 4.png",
+    "Images/WE - Maradha Bhagina 5.jpg",
+    "Images/WE - Maradha Bhagina 6.png",
+    "Images/WE - Maradha Bagina 7.jpg"
+  ],
+
+  KashiYatra: [
+    "Images/Kashi Yatra.png",
+    "Images/Kashi Yatra 2.png",
+    "Images/Kashi Yatra 3.jpg",
+    "Images/Kashi Yatra 4.jpg",
+    "Images/Kashi Yatra 5.jpg",
+    "Images/Kashi Yatra 6.jpg"
+  ],
+
+  Maduve: [
+    "Images/Wedding Rituals.jfif",
+    "Images/Wedding Rituals 2.jpg",
+    "Images/Wedding Rituals 3.jpg"
+  ],
+
+  Saptapadi: [
+    "Images/Saptapadi.jpg",
+    "Images/Saptapadi 2.jpg",
+    "Images/Saptapadi 3.jpg",
+    "Images/Saptapadi 4.jpg",
+    "Images/Saptapadi 5.jpg",
+    "Images/Saptapadi 6.png",
+    "Images/Saptapadi 7.png",
+    "Images/Saptapadi 9.png",
+    "Images/Saptapadi 10.jpg"
+  ],
+
+  DollDisplay: [
+    "Images/Doll Display.jpg",
+    "Images/Doll Display 2.jpg",
+    "Images/Doll Display 3.png",
+    "Images/Doll Display 4.jpg",
+    "Images/Doll Display 5.jpg",
+    "Images/Doll Display 6.jpg",
+    "Images/Doll Display 7.jpg",
+    "Images/Doll Display 8.jpg",
+    "Images/Doll Display 9.jpg",
+    "Images/Doll Display 10.jpg",
+    "Images/Doll Display 11.jpg",
+    "Images/Doll Display 12.jpg",
+    "Images/Doll Display 13.jpg",
+    "Images/Doll Display 14.jpg",
+    "Images/Doll Display 15.jpg",
+    "Images/Doll Display 16.jpg"
+  ],
+
+  BididhiMane: [
+    "Images/Bididhi Mane Arrangement.jpg",
+    "Images/Bididhi Mane Arrangement 2.png",
+    "Images/Bididhi Mane Arrangement 3.png",
+    "Images/Bididhi Mane Arrangement 4.png"
+  ],
+
+  VaraPoojeTrays: [
+    "Images/WE - Display Item.jpg",
+    "Images/WE - Display Item 2.jpg",
+    "Images/WE - Display Item 3.jpg",
+    "Images/WE - Display Item 4.jpg",
+    "Images/WE - Display Item 5.jpg",
+    "Images/WE - Display Item 6.jpg",
+    "Images/WE - Display Item 7.jpg",
+    "Images/WE - Display Item 8.jpg",
+    "Images/WE - Display Item 9.jpg",
+    "Images/WE - Display Item 10.jpg",
+    "Images/WE - Display Item 11.jpg",
+    "Images/WE - Display Item 12.png"
+  ],
+
+  BridalEntry: [
+    "Images/WE - Bridal Entry.jpg",
+    "Images/WE - Bridal Entry 2.jpg",
+    "Images/WE - Bridal Entry 3.jpg"
+  ],
+
+  BhoomaBhojana: [
+    "Images/Bhooma Bhojana.png",
+    "Images/Bhooma Bhojana 2.png"
+  ],
+
+  Gruhapravesha: [
+    "Images/Gruhapravesha Laxmi Pooja.jpg",
+    "Images/Gruhapravesha Laxmi Pooja 2.jpg"
+  ],
+
+  BanthiBhojana: [
+    "Images/Venue Decor 11.jpg"
+  ],
+
+  Upanayana: [
+    "Images/Upanaraya Kuteera.jpg"
+  ],
+
+  MathruBhojana: [
+    "Images/Upanayana Mathru Bhojana.jpg"
+  ],
+
+  SatyanarayanaPooja: [
+    "Images/Satyanarayana pooja.jpg",
+    "Images/Satyanarayana Pooja 2.jpg",
+    "Images/Satyanarayana Pooja 3.jpg"
+  ],
+
+  OtherItems: [
+    "Images/WE - Aarthi Plate.jpg",
+    "Images/WE - Antharapata.png",
+    "Images/WE - Antharapata 2.png",
+    "Images/WE - Antharapata 3.jpg",
+    "Images/WE - Antharapata 4.jpg",
+    "Images/WE - Antharapata 5.jpg",
+    "Images/WE - Antharapata 6.jpg",
+    "Images/WE - Backdrop.png",
+    "Images/WE - Decorated Coconut.png",
+    "Images/WE - Decorated Cocunuts 2.jpg",
+    "Images/WE - Decorated Cocunuts 3.jpg",
+    "Images/WE - Decorated Cocunuts 4.jpg",
+    "Images/WE - Decorated Cocunuts 5.jpg",
+    "Images/WE - Decorated Pots.png",
+    "Images/WE - Decorated Pots 2.jpg",
+    "Images/WE - Decorated Pots 3.jpg",
+    "Images/WE - Decorated Pots 4.jpg",
+    "Images/WE - Decorated Pots 5.jpg",
+    "Images/WE - Phalhara.png",
+    "Images/WE - Phalhara 2.png",
+    "Images/WE - Phalhara 3.png",
+    "Images/WE - Return Gifts.jpg",
+    "Images/WE - Return Gifts 2.jpg",
+    "Images/WE - Return Gifts 3.jpg",
+    "Images/WE - Thalambralu.jpg",
+    "Images/WE - Thalambralu 2.png",
+    "Images/WE - Thalambralu 3.jpg",
+    "Images/WE - Thambulam.png",
+    "Images/WE - Thambulam 2.png",
+    "Images/WE - Vaniki.jpg",
+    "Images/WE - Vaniki 2.png",
+    "Images/Wedding Essentials.jpg"
+  ]
+};
+
+function openGallery(category) {
+  const overlay = document.getElementById("galleryOverlay");
+  const container = document.getElementById("galleryScroll");
+
+  container.innerHTML = "";
+
+  galleryData[category].forEach(img => {
+    container.innerHTML += `
+      <img src="${img}" onclick="openImagePopup('${img}')">
+    `;
+  });
+
+  overlay.style.display = "block";
+}
+function openImagePopup(imgSrc) {
+  const popup = document.getElementById("imagePopup");
+  const popupImg = document.getElementById("popupImg");
+
+  popupImg.src = imgSrc;
+  popup.style.display = "flex";
+}
+
+function closeImagePopup() {
+  document.getElementById("imagePopup").style.display = "none";
+}
+function closeGallery(e) {
+  if (!e || e.target.id === "galleryOverlay") {
+    document.getElementById("galleryOverlay").style.display = "none";
+  }
+}
+</script>
+</body>
+</html>
